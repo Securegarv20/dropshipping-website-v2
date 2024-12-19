@@ -71,7 +71,7 @@ body.light-mode {
     --primary-color: #1e7b50; /* for dark mode */
     --primary-color-light: #0c8195; /* for light mode */
     --hover-color: #f1c111; /* for light theme */
-    --hover-color-dark: #48ba4f; /* for dark theme */
+    --hover-color-dark: #3d9a44; /* for dark theme */
     --accent-color: #f1f1f1; /* Light grey text */
     --background-dark: #1e1e1e;
     --background-light-color: #FFFFFF;
@@ -336,93 +336,144 @@ nav ul li a:hover {
 /* Filters Section Styling */
 /******************/
 
-.d-flex {
+/* Filters Container Styling */
+.filters-container {
+    position: relative; /* Allow dropdown to be positioned relative to the container */
     display: flex;
-    justify-content: flex-end; /* Keep the filters aligned to the right */
-    align-items: center;
-    gap: 20px; /* Space between the filters */
-    margin-right: 30px; /* Add margin to move them a bit from the edge */
+    justify-content: flex-end; /* Align the button to the right */
+    margin: 10px 100px; /* Add spacing above and below */
 }
 
-/* Individual filter containers */
-.sort-filter, .date-filter {
-    margin-bottom: 0;
+/* Filters Button */
+.filters-toggle-btn {
+    background-color: var(--background-color);
+    border: 2px solid var(--hover-color);
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: var(--hover-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Heading styling */
-.sort-filter h4, .date-filter h4 {
-    margin-bottom: 5px;
+/* Dropdown Arrow for the Button */
+.filters-toggle-btn::after {
+    content: "▼";
+    font-size: 0.8em;
+    margin-left: 8px;
+    color: var(--hover-color);
+}
+
+/* Hover Effect for Button */
+.filters-toggle-btn:hover {
+    background-color: var(--hover-color);
+    color: var(--background-color);
+    border-color: var(--background-color);
+}
+
+/* Filters Dropdown Styling */
+.filters-dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%; /* Align below the button */
+    right: 0; /* Align to the right edge of the container */
+    background-color: #222; /* Fixed dark gray background */
+    color: #fff; /* White font color for contrast */
+    border: 2px solid #4CAF50; /* Green border */
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for better visibility */
+    z-index: 1000; /* Ensure it appears above other content */
+    animation: slide-down 0.3s ease-out; /* Add slide-down effect */
+}
+
+/* Dropdown Elements Styling */
+.filters-dropdown h4 {
+    margin-bottom: 8px;
     font-size: 0.9em;
-    color: var(--font-color);
-    font-weight: 600;
+    color: #fff; /* White font color for headers */
     text-transform: uppercase;
+    font-weight: bold;
 }
 
-/* Styling for select dropdown and date input */
-#sortFilter, #dateFilter {
+.filters-dropdown select,
+.filters-dropdown input[type="date"],
+.filters-dropdown button {
+    width: 100%;
     padding: 6px 12px;
-    border: 2px solid var(--primary-color);
+    margin-bottom: 12px;
+    border: 2px solid  var(--hover-color); /* Green border */
     border-radius: 25px;
+    background-color: #333; /* Darker gray for inputs */
+    color: #fff; /* White text */
     font-size: 0.9em;
-    width: 150px;
-    height: 35px;
     transition: all 0.3s ease;
-    background: transparent;
-    color: var(--font-color);
 }
 
-/* Date input (calendar icon) color change */
-#dateFilter::-webkit-calendar-picker-indicator {
-    filter: invert(1); /* Adjusts color based on theme */
-}
-
-#sortFilter:focus, #dateFilter:focus {
+.filters-dropdown select:focus,
+.filters-dropdown input[type="date"]:focus {
     outline: none;
-    border-color: var(--primary-color-light);
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: var(--font-color);
 }
 
-/* Theme-based styles */
-body.dark-mode #sortFilter, body.dark-mode #dateFilter {
-    border-color: var(--primary-color);
+.filters-dropdown button {
+    width: 100%;
+    padding: 10px 20px;
+    border: 2px solid var(--hover-color);
+    border-radius: 25px;
     background-color: transparent;
-    color: #fff;
+    color: var(--hover-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .sort-filter h4, body.dark-mode .date-filter h4 {
-    color: var(--font-color-light);
+.filters-dropdown button:hover,
+.filters-dropdown select:hover,
+.filters-dropdown input[type="date"]:hover {
+    background-color: var(--hover-color); /* Green background on hover */
+    color: #222; /* Dark text on hover */
 }
 
-body.light-mode #sortFilter, body.light-mode #dateFilter {
-    border-color: var(--primary-color-light);
-    background-color: transparent;
-    color: #333;
+/* Show Dropdown when Active */
+.filters-dropdown.active {
+    display: block; /* Show when active */
+    background-color: #222; /* Fixed dark gray background */
+    color: #fff; /* White font color */
 }
 
-body.light-mode .sort-filter h4, body.light-mode .date-filter h4 {
-    color: var(--font-color-dark);
+/* Dropdown Animation */
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
 
 /******************/
 /* Chart Section */
 /******************/
-.chart-container {
+/* .chart-container {
     margin: 0 auto;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 80%; /* Limit max width for responsiveness */
+    max-width: 80%; 
 }
 
 #productChart {
     width: 100%;
-    max-height: 400px; /* Limit height dynamically */
+    max-height: 400px; 
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: var(--chart-background-light);
-}
+} */
 
 /* Theme Toggle Button */
 .theme-toggle {
@@ -483,9 +534,11 @@ table {
     border-spacing: 0; /* Ensure spacing between cells */
     margin: 20px auto;
     text-align: left;
+    background-color: var(--background-light-color);
 }
 
-table th, table td {
+table th,
+table td {
     padding: 12px 15px; /* Add consistent padding */
     border: 1px solid var(--primary-color-light); /* Add a subtle border */
     font-size: 0.9em;
@@ -496,20 +549,34 @@ table th {
     color: var(--font-color-light);
     text-transform: uppercase;
     font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
-table tr:nth-child(even) {
-    background-color: var(--background-light); /* Use theme's light background for even rows */
-}
-
-table tr:nth-child(odd) {
-    background-color: var(--background-dark); /* Use theme's darker background for odd rows */
+/* Restrict hover effect specifically to table rows */
+table tr {
+    color: var(--font-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover transition */
 }
 
 table tr:hover {
-    background-color: var(--primary-color-light); /* Highlight row on hover */
-    color: var(--font-color-dark); /* Change font color for contrast */
+    background-color: var(--hover-color); /* Highlight row on hover */
+    color: var(--font-color-light); /* Ensure text is visible on hover */
     cursor: pointer; /* Indicate interactivity */
+}
+
+/* Ensure the hover color does not affect other elements */
+.dropdown-menu,
+canvas {
+    background-color: inherit !important; /* Reset background on dropdown and canvas */
+    color: inherit !important; /* Reset text color */
+}
+
+.dropdown-menu:hover,
+canvas:hover {
+    background-color: inherit !important; /* Disable hover effect */
+    color: inherit !important;
 }
 
 table td {
@@ -525,6 +592,28 @@ table td {
     background-color: var(--primary-color-light);
     border-radius: 5px;
 }
+
+/* Graph Row Styles */
+.graph-row {
+    display: none; /* Hidden initially */
+}
+
+.graph-container {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    background-color: var(--background-light-color);
+}
+
+/* Chart Canvas Styling */
+canvas {
+    width: 100% !important;
+    height: 400px !important; /* Adjust the height as needed */
+    pointer-events: none; /* Disable hover effects */
+}
+
+
 
 /******************/
 /* Pagination */
@@ -965,50 +1054,11 @@ table td {
     }
 }
 
-/******************/
-/* Chart Section */
-/******************/
-/* For tablets (max-width: 768px) */
-@media (max-width: 768px) {
-    .chart-container {
-        padding: 15px; /* Reduce padding for smaller screens */
-        max-width: 90%; /* Increase the width for better visibility */
-    }
 
-    #productChart {
-        max-height: 300px; /* Reduce the height for smaller screens */
-    }
-}
-
-/* For small phones (max-width: 480px) */
-@media (max-width: 480px) {
-    .chart-container {
-        padding: 10px; /* Further reduce padding */
-        max-width: 100%; /* Utilize full width of the screen */
-    }
-
-    #productChart {
-        max-height: 250px; /* Further reduce the chart height */
-    }
-}
-
-/* For extra small phones (max-width: 360px) */
-@media (max-width: 360px) {
-    .chart-container {
-        padding: 5px; /* Minimal padding */
-        max-width: 100%; /* Utilize full width */
-    }
-
-    #productChart {
-        max-height: 200px; /* Adapt height for extra small devices */
-        font-size: 0.8rem; /* Adjust font size for readability */
-    }
-}
 
 /* ************************ */
 /* Table and Pagination    */
 /* ********************** */
-
 /* Medium screens (e.g., tablets) */
 @media screen and (max-width: 768px) {
     .table-container {
@@ -1041,6 +1091,17 @@ table td {
     .pagination-btn:hover {
         background-color: var(--hover-color);
         color: var(--background-color);
+    }
+
+    /* Adjust chart dimensions for tablets */
+    .graph-container {
+        max-width: 100%;
+        margin: 10px auto;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
     }
 }
 
@@ -1087,6 +1148,17 @@ table td {
         background-color: var(--hover-color);
         color: var(--background-color);
     }
+
+    /* Adjust chart dimensions for phones */
+    .graph-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
 }
 
 /* Extra small screens (e.g., very small phones) */
@@ -1127,5 +1199,41 @@ table td {
 
     .pagination-container {
         margin-top: 10px;
+    }
+
+    /* Adjust chart dimensions for very small screens */
+    .graph-container {
+        max-width: 100%;
+        padding: 5px;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+
+/* Filter BUtton */
+/* Default styling for larger screens (desktop) remains unchanged */
+
+/* Medium screens (tablets) */
+@media (max-width: 1024px) {
+    .filters-container {
+        margin-right: 20px; /* Move the button slightly to the right */
+    }
+}
+
+/* Small screens (mobile phones) */
+@media (max-width: 768px) {
+    .filters-container {
+        margin-right: 15px; /* Adjust position further for smaller screens */
+    }
+}
+
+/* Extra small screens (narrow mobile) */
+@media (max-width: 480px) {
+    .filters-container {
+        margin-right: 10px; /* Keep minimal adjustment for very small screens */
     }
 }

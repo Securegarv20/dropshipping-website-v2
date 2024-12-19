@@ -1,173 +1,167 @@
-// --------------------
-// Chart.js Initialization
-// --------------------
-const ctx = document.getElementById('productChart').getContext('2d');
+// *****************************
+// Chart JS
+// *****************************
 
-// Sample data for the chart (adjust values as needed)
-const data = {
-    labels: [
-        '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00'
-    ], // Time intervals from 12 AM to 12 PM
-    datasets: [{
-        label: 'Product Sales',
-        data: [12, 19, 3, 5, 2, 3, 15, 23, 17, 8, 4, 12, 5], // Sample sales data
-        fill: false,
-        borderColor: getChartLineColor(), // Dynamic line color
-        tension: 0.1 // Smooth curve
-    }]
-};
+document.addEventListener("DOMContentLoaded", () => {
+    const productRows = document.querySelectorAll(".product-row");
 
-// Chart configuration
-const config = {
-    type: 'line', // Line chart type
-    data: data,
-    options: {
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Time (24-hour format)' // X-axis title
-                },
-                ticks: {
-                    autoSkip: false, // Ensures all labels show up
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Sales Count' // Y-axis title
-                },
-                beginAtZero: true // Start Y-axis from 0
+    let currentlyOpenRow = null; // Track the currently open graph row
+
+    productRows.forEach((row) => {
+        row.addEventListener("click", () => {
+            const productId = row.getAttribute("data-id");
+            const graphRow = document.querySelector(`.graph-row[data-id="${productId}"]`);
+            const chartCanvas = document.getElementById(`chart-${productId}`);
+
+            // If there is a currently open graph row, close it
+            if (currentlyOpenRow && currentlyOpenRow !== graphRow) {
+                currentlyOpenRow.style.display = "none";
             }
-        },
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top', // Position of the legend
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return tooltipItem.raw + ' units'; // Custom tooltip label
-                    }
-                }
+
+            // Toggle the visibility of the clicked graph row
+            if (graphRow.style.display === "none" || !graphRow.style.display) {
+                graphRow.style.display = "table-row";
+                initializeGraph(chartCanvas, productId); // Initialize the graph
+                currentlyOpenRow = graphRow; // Update the currently open row
+            } else {
+                graphRow.style.display = "none";
+                currentlyOpenRow = null; // No row is open now
             }
-        }
-    }
-};
-
-// Create the chart
-const productChart = new Chart(ctx, config);
-
-// Function to get the chart line color based on the theme
-function getChartLineColor() {
-    return getComputedStyle(document.documentElement).getPropertyValue(
-        document.body.classList.contains('dark-mode') 
-        ? '--chart-line-dark' 
-        : '--chart-line-light'
-    ).trim();
-}
-
-// Function to get the chart background color based on the theme
-function getChartBackgroundColor() {
-    return getComputedStyle(document.documentElement).getPropertyValue(
-        document.body.classList.contains('dark-mode') 
-        ? '--chart-background-dark' 
-        : '--chart-background-light'
-    ).trim();
-}
-
-// Function to update chart colors based on theme
-function updateChartColors() {
-    // Update chart line color
-    productChart.data.datasets[0].borderColor = getChartLineColor();
-    // Update chart background color
-    document.getElementById('productChart').style.backgroundColor = getChartBackgroundColor();
-    productChart.update(); // Re-render the chart with updated settings
-}
-
-// When the theme is toggled, update the chart's line color and background color
-document.querySelector('.btn-theme').addEventListener('click', function() {
-    updateChartColors();
-});
-
-
-// --------------------
-// Table Row Click Event
-// --------------------
-document.querySelectorAll('#productTable tbody tr').forEach(row => {
-    row.addEventListener('click', () => {
-        // Get product-specific data for chart (using dummy data for now)
-        const productId = row.getAttribute('data-id');
-        let salesData;
-        // Dummy sales data for each product ID
-
-if (productId === "1") {
-    salesData = [15, 18, 4, 6, 3, 4, 16, 25, 20, 10, 6, 13, 7]; // LED Desk Lamp
-} else if (productId === "2") {
-    salesData = [10, 14, 8, 5, 4, 5, 18, 22, 15, 7, 3, 12, 6]; // Lamp Digital
-} else if (productId === "3") {
-    salesData = [12, 19, 3, 5, 2, 3, 15, 23, 17, 8, 4, 12, 5]; // Toothpaste Dispenser
-} else if (productId === "4") {
-    salesData = [25, 30, 20, 15, 18, 22, 40, 50, 45, 35, 25, 40, 33]; // Wireless Earphones
-} else if (productId === "5") {
-    salesData = [9, 14, 5, 7, 8, 6, 16, 18, 12, 7, 9, 10, 8]; // Bluetooth Speaker
-} else if (productId === "6") {
-    salesData = [25, 20, 15, 14, 18, 20, 30, 40, 28, 18, 20, 24, 22]; // Smartphone Case
-} else if (productId === "7") {
-    salesData = [30, 35, 40, 45, 32, 33, 40, 55, 50, 38, 42, 46, 48]; // Smartwatch
-} else if (productId === "8") {
-    salesData = [50, 60, 55, 45, 50, 53, 70, 80, 75, 68, 60, 72, 69]; // LED TV
-} else if (productId === "9") {
-    salesData = [20, 25, 10, 12, 15, 18, 25, 30, 20, 15, 18, 22, 17]; // Desk Fan
-} else if (productId === "10") {
-    salesData = [8, 10, 15, 12, 6, 5, 15, 20, 18, 8, 5, 10, 7]; // Portable Heater
-} else if (productId === "11") {
-    salesData = [22, 18, 25, 20, 30, 35, 40, 45, 35, 28, 33, 25, 30]; // Electric Kettle
-} else if (productId === "12") {
-    salesData = [14, 16, 12, 10, 8, 7, 20, 18, 16, 14, 12, 15, 18]; // Air Purifier
-} else if (productId === "13") {
-    salesData = [18, 20, 25, 30, 28, 32, 40, 50, 45, 38, 33, 42, 35]; // Electric Toothbrush
-} else if (productId === "14") {
-    salesData = [10, 8, 15, 12, 10, 7, 20, 25, 18, 15, 14, 12, 16]; // Air Conditioner
-} else if (productId === "15") {
-    salesData = [25, 20, 30, 40, 50, 45, 38, 32, 28, 35, 30, 36, 40]; // Refrigerator
-} else if (productId === "16") {
-    salesData = [22, 18, 12, 17, 16, 14, 18, 25, 30, 20, 15, 18, 21]; // Washing Machine
-} else if (productId === "17") {
-    salesData = [5, 8, 7, 10, 9, 6, 12, 15, 14, 9, 10, 11, 13]; // Microwave Oven
-} else if (productId === "18") {
-    salesData = [10, 12, 9, 7, 5, 4, 15, 18, 13, 9, 10, 12, 14]; // Blender
-} else if (productId === "19") {
-    salesData = [25, 28, 22, 20, 18, 21, 28, 30, 26, 20, 22, 30, 27]; // Induction Cooktop
-} else if (productId === "20") {
-    salesData = [20, 18, 25, 15, 12, 20, 28, 25, 30, 22, 18, 24, 20]; // Hair Dryer
-} else {
-    salesData = [10, 12, 8, 7, 5, 6, 15, 18, 14, 10, 7, 12, 8]; // Default dummy data
-}
-
-        // Update the chart with new data
-        productChart.data.datasets[0].data = salesData;
-        productChart.update();
+        });
     });
 });
 
+function initializeGraph(canvas, productId) {
+    // Check if the canvas already has a chart instance attached
+    if (!canvas.chart) {
+        // Example sales data; replace this with actual product-specific data
+        const data = {
+            labels: [
+                "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00",
+                "07:00", "08:00", "09:00", "10:00", "11:00", "12:00"
+            ], // Time in 24-hour format
+            datasets: [
+                {
+                    label: `Sales Data for Product ${productId}`,
+                    data: getSalesData(productId), // Get sales data dynamically
+                    borderColor: "rgba(75, 192, 192, 1)", // Line color
+                    borderWidth: 2,
+                    tension: 0.3, // Smooth curve
+                },
+            ],
+        };
+
+        // Initialize a Chart.js instance
+        canvas.chart = new Chart(canvas.getContext("2d"), {
+            type: "line",
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Time (24-hour format)",
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Sales",
+                        },
+                        beginAtZero: true,
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top",
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return `${tooltipItem.raw} units sold`;
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+}
+
+function getSalesData(productId) {
+    // Dummy sales data for different products (replace with real data)
+    const salesData = {
+        "1": [12, 19, 3, 5, 2, 8, 15, 10, 12, 9, 7, 6, 4],
+        "2": [8, 15, 10, 12, 9, 5, 6, 7, 8, 9, 10, 11, 12],
+        "3": [5, 6, 8, 9, 10, 12, 15, 18, 20, 22, 24, 25, 30],
+        "4": [20, 25, 30, 22, 18, 12, 10, 8, 6, 5, 3, 2, 1],
+        "5": [10, 14, 18, 16, 12, 8, 6, 5, 4, 3, 2, 1, 0],
+    };
+
+    // Return data for the given product ID or default data if not found
+    return salesData[productId] || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+}
 
 // --------------------
 // Search Filter
 // --------------------
+// Expand or Collapse Search Bar on Click
+document.getElementById("search-icon").addEventListener("click", () => {
+    const searchContainer = document.querySelector(".search-container");
+    const searchBar = document.getElementById("search-bar");
+
+    // Check if the search container is already active
+    if (searchContainer.classList.contains("active")) {
+        searchContainer.classList.remove("active"); // Collapse the search bar
+        searchBar.style.display = "none"; // Hide the input
+        searchBar.value = ""; // Clear the search input
+    } else {
+        searchContainer.classList.add("active"); // Expand the search bar
+        searchBar.style.display = "block"; // Show the input
+        searchBar.focus(); // Focus on the input field
+    }
+});
+
+// ---------------------
+// Filter Drop Down
+// ---------------------
+// Select the toggle button and dropdown menu
+const toggleBtn = document.getElementById('filtersToggleBtn');
+const dropdown = document.getElementById('filtersDropdown');
+
+// Add event listener to toggle visibility
+toggleBtn.addEventListener('click', (event) => {
+    event.stopPropagation(); // Prevent the click event from propagating to the document
+    dropdown.classList.toggle('active'); // Toggle the active class on the dropdown
+});
+
+// Close dropdown if clicked outside
+document.addEventListener("click", (event) => {
+    // Check if the clicked element is not within the dropdown or toggle button
+    if (!dropdown.contains(event.target) && event.target !== toggleBtn) {
+        dropdown.classList.remove("active");
+    }
+});
+
+
+
+// -------------------
+// SEARCH BAR
+// --------------------
+// Filter Table Rows as User Types
 document.getElementById("search-bar").addEventListener("input", (e) => {
     const searchText = e.target.value.toLowerCase();
 
-    // Loop through each row in the product table
+    // Loop through all rows in the table with ID 'productTable'
     document.querySelectorAll("#productTable tbody tr").forEach(row => {
-        // Get the text content of the product name column (index 1)
-        const productName = row.children[1].textContent.toLowerCase();
-
-        // If the product name includes the search text, show the row, otherwise hide it
-        row.style.display = productName.includes(searchText) ? "" : "none";
+        const productName = row.children[1].textContent.toLowerCase(); // Product Name column
+        row.style.display = productName.includes(searchText) ? "" : "none"; // Toggle row visibility
     });
 });
+
 
 
 // --------------------
@@ -177,15 +171,30 @@ document.getElementById("sortFilter").addEventListener("change", (e) => {
     const rows = Array.from(document.querySelectorAll("#productTable tbody tr"));
     const sortValue = e.target.value;
 
+    // Sort rows based on the selected filter
     rows.sort((a, b) => {
-        const priceA = parseFloat(a.children[2].textContent);
-        const priceB = parseFloat(b.children[2].textContent);
+        let valueA = 0;
+        let valueB = 0;
 
-        if (sortValue === "price-low-high") return priceA - priceB;
-        if (sortValue === "price-high-low") return priceB - priceA;
-        return 0;
+        if (sortValue === "price") {
+            // Sort by price
+            valueA = parseFloat(a.children[2]?.textContent.trim()) || 0; // Price is in column index 2
+            valueB = parseFloat(b.children[2]?.textContent.trim()) || 0;
+        } else if (sortValue === "stock") {
+            // Sort by stock
+            valueA = parseInt(a.children[3]?.textContent.trim(), 10) || 0; // Stock is in column index 3
+            valueB = parseInt(b.children[3]?.textContent.trim(), 10) || 0;
+        }
+
+        // Determine sort order
+        if (sortValue === "price" || sortValue === "stock") {
+            return valueA - valueB; // Ascending order
+        }
+
+        return 0; // Default option (no sorting)
     });
 
+    // Append sorted rows back to the table body without modifying other parts of the theme
     const tbody = document.querySelector("#productTable tbody");
     rows.forEach(row => tbody.appendChild(row));
 });
@@ -203,32 +212,79 @@ document.getElementById("dateFilter").addEventListener("input", (e) => {
 });
 
 
+
+// --------------------
+// Reset Filters
+// --------------------
+document.getElementById("resetFiltersBtn").addEventListener("click", () => {
+    // Reset the Search Bar
+    const searchBar = document.getElementById("search-bar");
+    searchBar.value = ""; // Clear search input
+    document.querySelectorAll("#productTable tbody tr").forEach(row => {
+        row.style.display = ""; // Show all rows
+    });
+
+    // Reset the Sort Filter
+    const sortFilter = document.getElementById("sortFilter");
+    sortFilter.value = "default"; // Set the dropdown to the default value
+
+    // Revert table rows to their original order
+    const tbody = document.querySelector("#productTable tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.sort((a, b) => a.dataset.originalIndex - b.dataset.originalIndex);
+    rows.forEach(row => tbody.appendChild(row));
+
+    // Add logic for any additional filters here (e.g., date filters)
+    const dateFilter = document.getElementById("dateFilter");
+    if (dateFilter) {
+        dateFilter.value = ""; // Clear date filter input
+        document.querySelectorAll("#productTable tbody tr").forEach(row => {
+            row.style.display = ""; // Show all rows
+        });
+    }
+
+    console.log("Filters reset!");
+});
+// Assign data-original-index to each row on page load
+document.querySelectorAll("#productTable tbody tr").forEach((row, index) => {
+    row.setAttribute("data-original-index", index);
+});
+
+
 // --------------------
 // Pagination Configuration
 // --------------------
-const productsPerPage = 5; // Number of products per page (adjust as needed)
-const products = document.querySelectorAll('#productTable tbody tr');
-const totalPages = Math.ceil(products.length / productsPerPage);
+const productsPerPage = 10; // Number of products per page
+const productRows = document.querySelectorAll('#productTable tbody .product-row'); // Select only product rows
+const totalPages = Math.ceil(productRows.length / productsPerPage);
 let currentPage = 1;
 
 // --------------------
 // Function to display the current page of products
 // --------------------
 function showPage(page) {
-  // Hide all products
-  products.forEach((product) => {
-    product.style.display = 'none';
+  // Hide all rows (both product and graph rows)
+  const allRows = document.querySelectorAll('#productTable tbody tr');
+  allRows.forEach((row) => {
+    row.style.display = 'none';
   });
 
-  // Show products for the current page
+  // Show product rows for the current page
   const startIndex = (page - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
 
-  for (let i = startIndex; i < endIndex && i < products.length; i++) {
-    products[i].style.display = '';
+  for (let i = startIndex; i < endIndex && i < productRows.length; i++) {
+    const productRow = productRows[i];
+    productRow.style.display = ''; // Show the product row
+
+    // Also show its corresponding hidden graph row (if any)
+    const graphRow = document.querySelector(`#productTable tbody .graph-row[data-id="${productRow.dataset.id}"]`);
+    if (graphRow) {
+      graphRow.style.display = '';
+    }
   }
 
-  // Update the page number display
+  // Update the pagination controls
   updatePagination();
 }
 
@@ -240,7 +296,7 @@ function updatePagination() {
   paginationList.innerHTML = ''; // Clear existing pagination numbers
 
   // Create page numbers dynamically
-  const maxPagesToShow = 5; // Number of page numbers to show at once (e.g., 1 2 3 4 5)
+  const maxPagesToShow = 5; // Number of page numbers to show at once
   let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
   let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
@@ -311,7 +367,7 @@ function setTheme(mode) {
     if (mode === 'dark') {
         root.style.setProperty('--primary-color', '#1e7b50');
         root.style.setProperty('--primary-color-light', '#0c8195');
-        root.style.setProperty('--hover-color', '#5bd763');
+        root.style.setProperty('--hover-color', '#3d9a44');
         root.style.setProperty('--accent-color', '#f1f1f1');
         root.style.setProperty('--background-dark', '#1e1e1e');
         root.style.setProperty('--background-light-color', '#333');
@@ -343,113 +399,41 @@ themeToggleBtn.addEventListener('click', () => {
     setTheme(currentTheme === 'dark' ? 'light' : 'dark'); // Toggle theme
 });
 
-
 // ------------------
-// NAVBAR FUNCTIONALITY
+// Hamburger Menu Functionality
 // ------------------
-document.addEventListener("DOMContentLoaded", function () {
-    const hamburger = document.querySelector(".hamburger");
-    const sideMenu = document.getElementById("sideMenu"); // Sidebar menu
-    const closeMenuBtn = document.getElementById("closeMenu"); // Close button for the sidebar
-    const nav = document.querySelector("nav"); // Navbar for scroll effect
-    const navLinks = sideMenu.querySelectorAll("a"); // Sidebar links
-    const mainContent = document.querySelector("body"); // Body or a specific content wrapper
-    const searchIcon = document.querySelector(".search-icon"); // Search icon
-    const searchContainer = document.querySelector(".search-container"); // Search bar container
-    const searchBar = document.getElementById("search-bar"); // Search input
-    const themeButton = document.querySelector(".theme-toggle"); // Theme toggle button
+// Get the hamburger button and nav links
+const hamburger = document.getElementById('hamburger');
+const sideMenu = document.getElementById('sideMenu');
 
-    // ------------------------
-    // Toggle Sidebar Menu
-    // ------------------------
-    if (hamburger && sideMenu) {
-        hamburger.addEventListener("click", () => {
-            sideMenu.classList.toggle("active"); // Toggle sidebar visibility
-            hamburger.classList.toggle("hamburger-active");
-        });
-    }
+// Track the sidebar's open/close state
+let isSidebarOpen = false;
 
-    // Close Sidebar Menu on Close Button
-    if (closeMenuBtn) {
-        closeMenuBtn.addEventListener("click", () => {
-            sideMenu.classList.remove("active");
-            hamburger.classList.remove("hamburger-active");
-        });
-    }
-
-    // Close Sidebar Menu on Link Click
-    if (navLinks.length > 0) {
-        navLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                sideMenu.classList.remove("active");
-                hamburger.classList.remove("hamburger-active");
-            });
-        });
-    }
-
-    // Close Sidebar Menu on Outside Click
-    mainContent.addEventListener("click", (e) => {
-        if (
-            sideMenu &&
-            hamburger &&
-            !sideMenu.contains(e.target) &&
-            !hamburger.contains(e.target)
-        ) {
-            sideMenu.classList.remove("active");
-            hamburger.classList.remove("hamburger-active");
-        }
-    });
-
-    // ------------------------
-    // Navbar Scroll Effect
-    // ------------------------
-    if (nav) {
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 50) {
-                nav.classList.add("scrolled");
-            } else {
-                nav.classList.remove("scrolled");
-            }
-        });
-    }
-
-    // ------------------------
-// Toggle Search Bar
-// ------------------------
-if (searchIcon && searchContainer && searchBar) {
-    // Toggle search bar visibility on icon click
-    searchIcon.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent event bubbling
-        searchContainer.classList.toggle("active");
-
-        if (searchContainer.classList.contains("active")) {
-            searchBar.focus(); // Automatically focus on the search bar
-        }
-    });
-
-    // Close search bar on outside click
-    document.addEventListener("click", (e) => {
-        if (!searchContainer.contains(e.target) && e.target !== searchIcon) {
-            searchContainer.classList.remove("active");
-        }
-    });
-
-    // Optional: Close search bar with the "Escape" key
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && searchContainer.classList.contains("active")) {
-            searchContainer.classList.remove("active");
-        }
-    });
-}
-
-    
-
-    // ------------------------
-    // Toggle Theme
-    // ------------------------
-    if (themeButton) {
-        themeButton.addEventListener("click", () => {
-            document.body.classList.toggle("dark-theme");
-        });
+// Toggle the sidebar's visibility on hamburger click
+hamburger.addEventListener('click', () => {
+    if (isSidebarOpen) {
+        sideMenu.style.left = '-250px'; // Close the sidebar
+        isSidebarOpen = false;
+    } else {
+        sideMenu.style.left = '0'; // Open the sidebar
+        isSidebarOpen = true;
     }
 });
+
+// Close the sidebar if clicked outside of it
+document.addEventListener('click', (event) => {
+    if (
+        isSidebarOpen && // Sidebar must be open
+        !sideMenu.contains(event.target) && // Click is outside the sidebar
+        !hamburger.contains(event.target) // Click is outside the hamburger button
+    ) {
+        sideMenu.style.left = '-250px'; // Close the sidebar
+        isSidebarOpen = false;
+    }
+});
+
+
+
+
+
+

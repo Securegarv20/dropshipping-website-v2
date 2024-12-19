@@ -23,14 +23,15 @@
             <a href="#" class="logo">TrendyDrops</a>
 
              <!-- Search Bar -->
-        <div class="search-container">
-            <input type="text" id="search-bar" placeholder="Search...">
-        </div>
-    
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Search..." style="display: none;"> <!-- Hidden initially -->
+            </div>
+
             <!-- Search Icon -->
             <span id="search-icon" class="search-icon">
                 <i class="fas fa-search"></i> <!-- FontAwesome Icon -->
             </span>
+
     
             <!-- Hamburger Icon -->
             <div class="hamburger" id="hamburger">
@@ -71,29 +72,34 @@
         <div class="page-header">
             <h1>Product Tracking Dashboard</h1>
             <p>Find and track most trendy products easily.</p>
+
+             <!-- Filters Section -->
+        <div class="filters-container">
+            <button class="filters-toggle-btn" id="filtersToggleBtn">Filters</button>
+            <div class="filters-dropdown" id="filtersDropdown">
+                <div class="sort-filter">
+                    <h4>SORT BY</h4>
+                    <select id="sortFilter">
+                        <option value="default">Default</option>
+                        <option value="price">Price</option>
+                        <option value="stock">Stock</option>
+                    </select>
+                </div>
+                <div class="date-filter">
+                    <h4>FILTER BY DATE</h4>
+                    <input type="date" id="dateFilter">
+                </div>
+                <button id="resetFiltersBtn">Reset Filters</button>
+            </div>
+        </div>
             <div class="line"></div>
         </div>
 
-         <!-- Filters Section -->
-         <div class="filters-section mb-4">
-            <div class="d-flex justify-content-end align-items-center">
-                <!-- Sort Filter -->
-                <div class="sort-filter">
-                    <h4>Sort By</h4>
-                    <select id="sortFilter">
-                        <option value="default">Default</option>
-                        <option value="price-low-high">Price: Low to High</option>
-                        <option value="price-high-low">Price: High to Low</option>
-                    </select>
-                </div>
 
-                <!-- Date Filter -->
-                <div class="date-filter ml-4">
-                    <h4>Filter by Date</h4>
-                    <input type="date" id="dateFilter">
-                </div>
-            </div>
-        </div>
+       
+        
+
+        
         
         <!-- Theme Toggle Button -->
         <div class="theme-toggle">
@@ -102,11 +108,11 @@
 
 
         <!-- Chart Section -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-12 col-md-8 chart-container">
                 <canvas id="productChart"></canvas>
             </div>
-        </div>
+        </div> -->
 
         <!-- Product Table Section -->
         <div class="table-container p-4 mt-4">
@@ -122,172 +128,121 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr data-id="1">
-                        <td data-label="Product ID">4728907654</td>
-                        <td data-label="Product Name">LED Desk Lamp</td>
-                        <td data-label="Product Price ₹">599.0</td>
-                        <td data-label="Stock">120</td>
-                        <td data-label="Collection ID">7346964182</td>
-                        <td data-label="Date">2024-12-15</td>
-                    </tr>
-                    <tr data-id="2">
-                        <td data-label="Product ID">4723907654</td>
-                        <td data-label="Product Name">Lamp Digital</td>
-                        <td data-label="Product Price ₹">899.0</td>
-                        <td data-label="Stock">100</td>
-                        <td data-label="Collection ID">7446964182</td>
-                        <td data-label="Date">2024-12-24</td>
-                    </tr>
-                    <tr data-id="3">
-                        <td data-label="Product ID">4528907654</td>
-                        <td data-label="Product Name">Toothpaste Dispenser</td>
+                    <!-- Product Row 1 -->
+                    <tr class="product-row" data-id="1">
+                        <td data-label="Product ID">4823749561</td>
+                        <td data-label="Product Name">Wireless Mouse</td>
                         <td data-label="Product Price ₹">799.0</td>
-                        <td data-label="Stock">130</td>
-                        <td data-label="Collection ID">7446964882</td>
-                        <td data-label="Date">2024-12-02</td>
+                        <td data-label="Stock">150</td>
+                        <td data-label="Collection ID">9384756291</td>
+                        <td data-label="Date">2024-11-15</td>
                     </tr>
-                    <tr data-id="4">
-                        <td data-label="Product ID">4832907654</td>
-                        <td data-label="Product Name">Wireless Earphones</td>
-                        <td data-label="Product Price ₹">1599.0</td>
-                        <td data-label="Stock">50</td>
-                        <td data-label="Collection ID">7445964182</td>
-                        <td data-label="Date">2024-12-10</td>
+                    <!-- Hidden Graph Row 1 -->
+                    <tr class="graph-row" data-id="1" style="display: none;">
+                        <td colspan="6">
+                            <div class="graph-container">
+                                <canvas id="chart-1"></canvas>
+                            </div>
+                        </td>
                     </tr>
-                    <tr data-id="5">
-                        <td data-label="Product ID">4923907654</td>
-                        <td data-label="Product Name">Bluetooth Speaker</td>
+                
+                    <!-- Product Row 2 -->
+                    <tr class="product-row" data-id="2">
+                        <td data-label="Product ID">4823749562</td>
+                        <td data-label="Product Name">Bluetooth Keyboard</td>
                         <td data-label="Product Price ₹">1299.0</td>
-                        <td data-label="Stock">85</td>
-                        <td data-label="Collection ID">7342964182</td>
-                        <td data-label="Date">2024-12-05</td>
+                        <td data-label="Stock">80</td>
+                        <td data-label="Collection ID">9384756292</td>
+                        <td data-label="Date">2024-11-16</td>
                     </tr>
-                    <tr data-id="6">
-                        <td data-label="Product ID">4628907654</td>
-                        <td data-label="Product Name">Smartphone Case</td>
+                    <!-- Hidden Graph Row 2 -->
+                    <tr class="graph-row" data-id="2" style="display: none;">
+                        <td colspan="6">
+                            <div class="graph-container">
+                                <canvas id="chart-2"></canvas>
+                            </div>
+                        </td>
+                    </tr>
+                
+                    <!-- Product Row 3 -->
+                    <tr class="product-row" data-id="3">
+                        <td data-label="Product ID">4823749563</td>
+                        <td data-label="Product Name">Smartphone Stand</td>
                         <td data-label="Product Price ₹">399.0</td>
                         <td data-label="Stock">200</td>
-                        <td data-label="Collection ID">7346969882</td>
-                        <td data-label="Date">2024-12-18</td>
+                        <td data-label="Collection ID">9384756293</td>
+                        <td data-label="Date">2024-11-17</td>
                     </tr>
-                    <tr data-id="7">
-                        <td data-label="Product ID">4726907654</td>
-                        <td data-label="Product Name">Smartwatch</td>
-                        <td data-label="Product Price ₹">2499.0</td>
-                        <td data-label="Stock">60</td>
-                        <td data-label="Collection ID">7446964182</td>
-                        <td data-label="Date">2024-12-20</td>
+                    <!-- Hidden Graph Row 3 -->
+                    <tr class="graph-row" data-id="3" style="display: none;">
+                        <td colspan="6">
+                            <div class="graph-container">
+                                <canvas id="chart-3"></canvas>
+                            </div>
+                        </td>
                     </tr>
-                    <tr data-id="8">
-                        <td data-label="Product ID">4926907654</td>
-                        <td data-label="Product Name">LED TV</td>
-                        <td data-label="Product Price ₹">39999.0</td>
-                        <td data-label="Stock">30</td>
-                        <td data-label="Collection ID">7346968282</td>
-                        <td data-label="Date">2024-12-25</td>
-                    </tr>
-                    <tr data-id="9">
-                        <td data-label="Product ID">4728908654</td>
-                        <td data-label="Product Name">Desk Fan</td>
-                        <td data-label="Product Price ₹">799.0</td>
-                        <td data-label="Stock">120</td>
-                        <td data-label="Collection ID">7346964182</td>
-                        <td data-label="Date">2024-12-12</td>
-                    </tr>
-                    <tr data-id="10">
-                        <td data-label="Product ID">4729907654</td>
-                        <td data-label="Product Name">Portable Heater</td>
-                        <td data-label="Product Price ₹">1499.0</td>
-                        <td data-label="Stock">70</td>
-                        <td data-label="Collection ID">7346964782</td>
-                        <td data-label="Date">2024-12-10</td>
-                    </tr>
-                    <tr data-id="11">
-                        <td data-label="Product ID">4638907654</td>
-                        <td data-label="Product Name">Electric Kettle</td>
-                        <td data-label="Product Price ₹">999.0</td>
-                        <td data-label="Stock">95</td>
-                        <td data-label="Collection ID">7346964282</td>
-                        <td data-label="Date">2024-12-22</td>
-                    </tr>
-                    <tr data-id="12">
-                        <td data-label="Product ID">4723908654</td>
-                        <td data-label="Product Name">Air Purifier</td>
-                        <td data-label="Product Price ₹">2999.0</td>
-                        <td data-label="Stock">45</td>
-                        <td data-label="Collection ID">7347964582</td>
-                        <td data-label="Date">2024-12-28</td>
-                    </tr>
-                    <tr data-id="13">
-                        <td data-label="Product ID">4728907454</td>
-                        <td data-label="Product Name">Electric Toothbrush</td>
+                
+                    <!-- Product Row 4 -->
+                    <tr class="product-row" data-id="4">
+                        <td data-label="Product ID">4823749564</td>
+                        <td data-label="Product Name">Portable Charger</td>
                         <td data-label="Product Price ₹">1599.0</td>
-                        <td data-label="Stock">130</td>
-                        <td data-label="Collection ID">7346964382</td>
-                        <td data-label="Date">2024-12-16</td>
+                        <td data-label="Stock">60</td>
+                        <td data-label="Collection ID">9384756294</td>
+                        <td data-label="Date">2024-11-18</td>
                     </tr>
-                    <tr data-id="14">
-                        <td data-label="Product ID">4736907654</td>
-                        <td data-label="Product Name">Air Conditioner</td>
-                        <td data-label="Product Price ₹">27999.0</td>
-                        <td data-label="Stock">25</td>
-                        <td data-label="Collection ID">7346964882</td>
-                        <td data-label="Date">2024-12-30</td>
+                    <!-- Hidden Graph Row 4 -->
+                    <tr class="graph-row" data-id="4" style="display: none;">
+                        <td colspan="6">
+                            <div class="graph-container">
+                                <canvas id="chart-4"></canvas>
+                            </div>
+                        </td>
                     </tr>
-                    <tr data-id="15">
-                        <td data-label="Product ID">4748907654</td>
-                        <td data-label="Product Name">Refrigerator</td>
-                        <td data-label="Product Price ₹">34999.0</td>
-                        <td data-label="Stock">40</td>
-                        <td data-label="Collection ID">7346964082</td>
-                        <td data-label="Date">2024-12-23</td>
+                
+                    <!-- Product Row 5 -->
+                    <tr class="product-row" data-id="5">
+                        <td data-label="Product ID">4823749565</td>
+                        <td data-label="Product Name">Noise Cancelling Headphones</td>
+                        <td data-label="Product Price ₹">2999.0</td>
+                        <td data-label="Stock">90</td>
+                        <td data-label="Collection ID">9384756295</td>
+                        <td data-label="Date">2024-11-19</td>
                     </tr>
-                    <tr data-id="16">
-                        <td data-label="Product ID">4758907654</td>
-                        <td data-label="Product Name">Washing Machine</td>
-                        <td data-label="Product Price ₹">24999.0</td>
-                        <td data-label="Stock">15</td>
-                        <td data-label="Collection ID">7346964382</td>
-                        <td data-label="Date">2024-12-19</td>
+                    <!-- Hidden Graph Row 5 -->
+                    <tr class="graph-row" data-id="5" style="display: none;">
+                        <td colspan="6">
+                            <div class="graph-container">
+                                <canvas id="chart-5"></canvas>
+                            </div>
+                        </td>
                     </tr>
-                    <tr data-id="17">
-                        <td data-label="Product ID">4768907654</td>
-                        <td data-label="Product Name">Microwave Oven</td>
-                        <td data-label="Product Price ₹">12999.0</td>
-                        <td data-label="Stock">50</td>
-                        <td data-label="Collection ID">7345964182</td>
-                        <td data-label="Date">2024-12-17</td>
-                    </tr>
-                    <tr data-id="18">
-                        <td data-label="Product ID">4778907654</td>
-                        <td data-label="Product Name">Blender</td>
+                
+                    <!-- Product Row 6 -->
+                    <tr class="product-row" data-id="6">
+                        <td data-label="Product ID">4823749566</td>
+                        <td data-label="Product Name">Smart Watch</td>
                         <td data-label="Product Price ₹">4999.0</td>
-                        <td data-label="Stock">80</td>
-                        <td data-label="Collection ID">7346964182</td>
-                        <td data-label="Date">2024-12-14</td>
-                    </tr>
-                    <tr data-id="19">
-                        <td data-label="Product ID">4788907654</td>
-                        <td data-label="Product Name">Induction Cooktop</td>
-                        <td data-label="Product Price ₹">7999.0</td>
-                        <td data-label="Stock">65</td>
-                        <td data-label="Collection ID">7346964282</td>
-                        <td data-label="Date">2024-12-26</td>
-                    </tr>
-                    <tr data-id="20">
-                        <td data-label="Product ID">4798907654</td>
-                        <td data-label="Product Name">Hair Dryer</td>
-                        <td data-label="Product Price ₹">1999.0</td>
                         <td data-label="Stock">110</td>
-                        <td data-label="Collection ID">7346964782</td>
-                        <td data-label="Date">2024-12-29</td>
+                        <td data-label="Collection ID">9384756296</td>
+                        <td data-label="Date">2024-11-20</td>
                     </tr>
-                    
-                    
-                    <!-- Other rows here -->
+                    <!-- Hidden Graph Row 6 -->
+                    <tr class="graph-row" data-id="6" style="display: none;">
+                        <td colspan="6">
+                            <div class="graph-container">
+                                <canvas id="chart-6"></canvas>
+                            </div>
+                        </td>
+                    </tr>
+                
+                    <!-- Add similar rows for Product 7 to Product 20 with unique data -->
+                
                 </tbody>
+                
             </table>
         </div>
+        
 
         <!-- Pagination Section -->
 <div class="pagination-container text-center mt-4">
