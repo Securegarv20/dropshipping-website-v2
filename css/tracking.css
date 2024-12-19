@@ -11,6 +11,10 @@ body {
     margin: 0;
     padding: 0;
 }
+html, body {
+    overflow-x: hidden;
+}
+
 
 /* Style the scrollbar container */
 ::-webkit-scrollbar {
@@ -196,33 +200,6 @@ nav ul li a:hover {
     margin: 20px 0;
 }
 
-/* Theme Toggle Button */
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    z-index: 999;
-}
-
-/* Theme Button Styling */
-.btn-theme {
-    background-color: rgb(24, 23, 23);
-    color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 1, 1);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-theme:hover {
-    background-color: var(--background-dark);
-}
-
 /******************/
 /* Sidebar Menu (Hamburger) */
 /******************/
@@ -275,34 +252,56 @@ nav ul li a:hover {
     margin-right: 20px;
 }
 
-
 /******************/
 /* Search Bar Styles */
 /******************/
 .search-container {
     position: relative;
-    width: 200px; /* Adjust width as needed */
-    margin-left: 20px; /* Adjust position to left */
+    width: 0; /* Hidden by default on small screens */
+    height: 40px;
+    overflow: hidden; /* Prevent content overflow */
+    transition: width 0.3s ease; /* Smooth expanding animation */
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
+.search-container.active {
+    width: 200px; /* Expand when active */
+}
+
+/* Search Bar Input */
 #search-bar {
-    width: 100%;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 30px; /* Curved border */
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
     outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: transparent;
+    color: #333;
 }
 
+/* Placeholder Styling */
 #search-bar::placeholder {
-    color: #888;
+    color: #aaa;
 }
 
-#search-bar:focus {
-    border-color: #3b8bfd;
-    box-shadow: 0 0 5px rgba(59, 143, 253, 0.3);
+/* Search Icon */
+.search-icon {
+    font-size: 25px;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
 }
+
+/* Rotate the icon when active */
+.search-container.active .search-icon {
+    transform: rotate(90deg);
+}
+
 
 /******************/
 /* Page Header */
@@ -407,29 +406,64 @@ body.light-mode .sort-filter h4, body.light-mode .date-filter h4 {
 /******************/
 /* Chart Section */
 /******************/
-
-/* Chart Container */
 .chart-container {
     margin: 0 auto;
-    width: 60%; /* Adjust width to make it larger */
-
-    /* margin-left: 40px; */
-    margin-top: auto;
-    padding: 10px;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px; /* Decreased top margin */
+    width: 100%;
+    max-width: 80%; /* Limit max width for responsiveness */
 }
 
 #productChart {
     width: 100%;
-    height: 200px; /* Increased height */
-    border-radius: 10px;
-    background-color: var(--chart-background-light); /* Default light background */
-    margin-left: -20px; /* Slight shift to the left */
+    max-height: 400px; /* Limit height dynamically */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--chart-background-light);
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed; /* Fixed to stay at the same position while scrolling */
+    bottom: 20px; /* Distance from the bottom of the viewport */
+    right: 20px; /* Distance from the right edge of the viewport */
+    z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+/* Theme Button Styling */
+.btn-theme {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    border: none;
+    padding: 15px; /* Larger padding for better visibility */
+    border-radius: 50%; /* Circular button */
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    font-size: 18px; /* Adjust font size for better appearance */
+}
+
+/* Hover Effect */
+.btn-theme:hover {
+    background-color: var(--primary-color); /* Change color on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Optional: Add a subtle animation */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.btn-theme:hover {
+    animation: bounce 0.5s ease-in-out;
+}
 
 
 /******************/
@@ -445,27 +479,51 @@ body.light-mode .sort-filter h4, body.light-mode .date-filter h4 {
 
 table {
     width: 90%;
-    border-collapse: collapse;
-    align-items: center;
-    justify-content: center;
-    margin-left: 70px;
-    margin-bottom: 20px;
+    border-collapse: separate; /* Avoid collapsing borders */
+    border-spacing: 0; /* Ensure spacing between cells */
+    margin: 20px auto;
+    text-align: left;
 }
 
 table th, table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    color: var(--font-color);
+    padding: 12px 15px; /* Add consistent padding */
+    border: 1px solid var(--primary-color-light); /* Add a subtle border */
+    font-size: 0.9em;
 }
 
 table th {
-    background-color: var(--background-dark);
+    background-color: var(--primary-color);
+    color: var(--font-color-light);
+    text-transform: uppercase;
     font-weight: bold;
 }
 
+table tr:nth-child(even) {
+    background-color: var(--background-light); /* Use theme's light background for even rows */
+}
+
+table tr:nth-child(odd) {
+    background-color: var(--background-dark); /* Use theme's darker background for odd rows */
+}
+
 table tr:hover {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color-light); /* Highlight row on hover */
+    color: var(--font-color-dark); /* Change font color for contrast */
+    cursor: pointer; /* Indicate interactivity */
+}
+
+table td {
+    color: var(--font-color);
+    text-align: center; /* Align text to the center */
+}
+
+.table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color-light);
+    border-radius: 5px;
 }
 
 /******************/
@@ -527,11 +585,9 @@ table tr:hover {
     cursor: not-allowed;
 }
 
-
-
-/******************/
+/* *************************************** */
 /* Media Queries for Navbar Responsive Design */
-/******************/
+/* *************************************** */
 @media screen and (max-width: 1024px) {
     /* For tablets and smaller screens */
     .nav-container {
@@ -574,14 +630,6 @@ table tr:hover {
         background-color: var(--background-dark);
         height: 100vh;
         padding-top: 20px;
-    }
-
-    /* Theme toggle button adjustments */
-    .theme-toggle {
-        position: absolute;
-        top: 15px;
-        right: 10px;
-        z-index: 999;
     }
 }
 
@@ -636,20 +684,7 @@ table tr:hover {
         text-align: center;
     }
 
-    /* Theme toggle button adjustments */
-    .theme-toggle {
-        position: absolute;
-        top: 20px;
-        right: 10px;
-        display: flex;
-        gap: 10px;
-    }
 
-    /* Move search bar inside hamburger menu */
-    .search-container {
-        width: 90%;
-        margin: 20px auto;
-    }
 }
 
 @media screen and (max-width: 480px) {
@@ -657,14 +692,6 @@ table tr:hover {
     .nav-container {
         flex-direction: column;
         align-items: center;
-    }
-
-    /* Search Bar further adjusted for tiny screens */
-    #search-bar {
-        width: 120px; /* Small search bar */
-        padding: 4px 8px; /* Smaller padding */
-        font-size: 0.75rem;
-        margin: 0; /* Remove margin */
     }
 
     /* Logo font size */
@@ -702,18 +729,403 @@ table tr:hover {
         text-align: center;
     }
 
-    /* Theme toggle button adjustments */
-    .theme-toggle {
-        position: absolute;
-        top: 20px;
-        right: 10px;
+}
+
+@media screen and (max-width: 430px) {
+    /* Navbar container adjustments */
+    .nav-container {
+        position: relative; /* Keep elements positioned relative to this container */
         display: flex;
-        gap: 10px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
     }
 
-    /* Move the search bar inside the hamburger menu */
+    /* Logo adjustments */
+    .logo {
+        font-size: 1.2rem;
+        margin-left: 5px;
+    }
+
+    /* Hamburger menu positioning */
+    .hamburger {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        font-size: 1.5rem;
+        z-index: 101;
+    }
+
+    /* Search icon positioning */
+    #search-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 50px; /* Space between hamburger menu and search bar */
+        font-size: 1.4rem;
+        z-index: 102;
+    }
+
+    /* Search bar styling for smaller screens */
+    #search-bar {
+        width: calc(100% - 120px); /* Adjust to fill the remaining space */
+        max-width: 250px;
+        padding: 5px 10px;
+        font-size: 0.85rem;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 90px;
+    }
+
+    /* Nav links default hidden */
+    #navLinks {
+        display: none;
+    }
+
+    /* Nav links when active */
+    #navLinks.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        background-color: var(--background-dark);
+        height: calc(100vh - 50px);
+        padding-top: 20px;
+        z-index: 100;
+        overflow-y: auto;
+    }
+
+    /* Mobile-friendly adjustments for nav links */
+    #navLinks.active li {
+        margin: 10px 0;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    /* Extra small screen adjustments (older phones) */
+    .nav-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;
+    }
+
+    /* Logo adjustments for very small screens */
+    .logo {
+        font-size: 1rem; /* Smaller logo font */
+    }
+
+    /* Search bar adjustments */
+    #search-bar {
+        width: 100px; /* Smaller width for extremely narrow screens */
+        font-size: 0.6rem; /* Adjust font size */
+    }
+
+    /* Hamburger menu adjustments */
+    .hamburger {
+        font-size: 1rem; /* Slightly smaller for very small screens */
+        top: 8px; /* Adjust vertical positioning */
+    }
+}
+
+
+/* *************************************** */
+/* Media Queries for Theme Button */
+/* *************************************** */
+/* Default styling (for larger screens, above 1200px) */
+.theme-toggle {
+    bottom: 30px;
+    right: 30px;
+}
+
+.btn-theme {
+    padding: 10px 20px;
+    font-size: 1.5rem;
+}
+
+/* Large screens (1200px and below) */
+@media (max-width: 1200px) {
+    .theme-toggle {
+        bottom: 25px;
+        right: 25px;
+    }
+
+    .btn-theme {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Medium screens (992px and below) */
+@media (max-width: 992px) {
+    .theme-toggle {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .btn-theme {
+        padding: 9px 16px;
+        font-size: 1rem;
+    }
+}
+
+/* Tablet screens (768px and below) */
+@media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .btn-theme {
+        padding: 8px 14px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Small screens (480px and below) */
+@media (max-width: 480px) {
+    .theme-toggle {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .btn-theme {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra small screens (320px and below) */
+@media (max-width: 320px) {
+    .theme-toggle {
+        bottom: 8px;
+        right: 8px;
+    }
+
+    .btn-theme {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+/* *************************************** */
+/* Media Queries for Search Bar */
+/* *************************************** */
+
+@media (max-width: 768px) {
     .search-container {
-        width: 90%;
-        margin: 20px auto;
+        background: #fff;
+        width: 0; /* Hidden by default */
+    }
+
+    .search-container.active {
+        width: 200px; /* Expand on activation */
+    }
+
+    #search-bar {
+        display: block; /* Ensure it's visible on expansion */
+    }
+}
+
+/* *************************************** */
+/* Additional Media Queries for More Screen Sizes */
+/* *************************************** */
+
+/* Small phones (360px and below) */
+@media (max-width: 360px) {
+    .logo {
+        font-size: 1rem; /* Reduce logo font size */
+        margin-left: 2px;
+    }
+
+    #search-bar {
+        width: 120px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 5px;
+    }
+
+    .hamburger {
+        font-size: 1.2rem; /* Adjust icon size */
+    }
+
+    .theme-toggle {
+        bottom: 5px;
+        right: 5px;
+    }
+
+    #navLinks.active li {
+        margin: 8px 0;
+    }
+}
+
+/******************/
+/* Chart Section */
+/******************/
+/* For tablets (max-width: 768px) */
+@media (max-width: 768px) {
+    .chart-container {
+        padding: 15px; /* Reduce padding for smaller screens */
+        max-width: 90%; /* Increase the width for better visibility */
+    }
+
+    #productChart {
+        max-height: 300px; /* Reduce the height for smaller screens */
+    }
+}
+
+/* For small phones (max-width: 480px) */
+@media (max-width: 480px) {
+    .chart-container {
+        padding: 10px; /* Further reduce padding */
+        max-width: 100%; /* Utilize full width of the screen */
+    }
+
+    #productChart {
+        max-height: 250px; /* Further reduce the chart height */
+    }
+}
+
+/* For extra small phones (max-width: 360px) */
+@media (max-width: 360px) {
+    .chart-container {
+        padding: 5px; /* Minimal padding */
+        max-width: 100%; /* Utilize full width */
+    }
+
+    #productChart {
+        max-height: 200px; /* Adapt height for extra small devices */
+        font-size: 0.8rem; /* Adjust font size for readability */
+    }
+}
+
+/* ************************ */
+/* Table and Pagination    */
+/* ********************** */
+
+/* Medium screens (e.g., tablets) */
+@media screen and (max-width: 768px) {
+    .table-container {
+        padding: 15px;
+    }
+
+    table {
+        width: 100%; /* Make table take full width */
+        font-size: 0.85em;
+        table-layout: auto; /* Adjust table layout for better responsiveness */
+    }
+
+    table th, table td {
+        padding: 10px 8px; /* Reduce padding */
+    }
+
+    table tr:hover {
+        background-color: var(--hover-color);
+        color: var(--background-color);
+    }
+
+    .pagination-list li a,
+    .pagination-btn {
+        font-size: 14px;
+        padding: 8px 12px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination-list li a:hover,
+    .pagination-btn:hover {
+        background-color: var(--hover-color);
+        color: var(--background-color);
+    }
+}
+
+/* Small screens (e.g., phones) */
+@media screen and (max-width: 480px) {
+    .table-container {
+        padding: 10px;
+    }
+
+    table {
+        width: 100%; /* Keep table width fluid */
+        font-size: 0.8em;
+        border-collapse: collapse; /* Prevent gaps between table cells */
+    }
+
+    table th, table td {
+        padding: 8px 6px;
+        word-wrap: break-word; /* Enable wrapping of long text */
+    }
+
+    table tr:hover {
+        background-color: var(--hover-color);
+        color: var(--background-color);
+    }
+
+    .pagination-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pagination-list {
+        flex-wrap: wrap;
+    }
+
+    .pagination-list li a,
+    .pagination-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination-list li a:hover,
+    .pagination-btn:hover {
+        background-color: var(--hover-color);
+        color: var(--background-color);
+    }
+}
+
+/* Extra small screens (e.g., very small phones) */
+@media screen and (max-width: 360px) {
+    .table-container {
+        padding: 5px;
+    }
+
+    table {
+        width: 100%;
+        font-size: 0.75em;
+        table-layout: fixed; /* Fix table layout to avoid horizontal scrolling */
+    }
+
+    table th, table td {
+        padding: 5px 4px;
+        word-wrap: break-word;
+        overflow-wrap: break-word; /* Ensure text breaks properly */
+    }
+
+    table tr:hover {
+        background-color: var(--hover-color);
+        color: var(--background-color);
+    }
+
+    .pagination-list li a,
+    .pagination-btn {
+        font-size: 10px;
+        padding: 4px 8px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination-list li a:hover,
+    .pagination-btn:hover {
+        background-color: var(--hover-color);
+        color: var(--background-color);
+    }
+
+    .pagination-container {
+        margin-top: 10px;
     }
 }

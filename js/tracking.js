@@ -345,29 +345,111 @@ themeToggleBtn.addEventListener('click', () => {
 
 
 // ------------------
-// Hamburger Menu Functionality
+// NAVBAR FUNCTIONALITY
 // ------------------
-// Get the hamburger button and nav links
-const hamburger = document.getElementById('hamburger');
-const sideMenu = document.getElementById('sideMenu');
-const closeMenu = document.getElementById('closeMenu');
+document.addEventListener("DOMContentLoaded", function () {
+    const hamburger = document.querySelector(".hamburger");
+    const sideMenu = document.getElementById("sideMenu"); // Sidebar menu
+    const closeMenuBtn = document.getElementById("closeMenu"); // Close button for the sidebar
+    const nav = document.querySelector("nav"); // Navbar for scroll effect
+    const navLinks = sideMenu.querySelectorAll("a"); // Sidebar links
+    const mainContent = document.querySelector("body"); // Body or a specific content wrapper
+    const searchIcon = document.querySelector(".search-icon"); // Search icon
+    const searchContainer = document.querySelector(".search-container"); // Search bar container
+    const searchBar = document.getElementById("search-bar"); // Search input
+    const themeButton = document.querySelector(".theme-toggle"); // Theme toggle button
 
-// Hamburger Menu Functionality
-hamburger.addEventListener('click', () => {
-    sideMenu.style.left = '0'; // Slide in the sidebar
-});
+    // ------------------------
+    // Toggle Sidebar Menu
+    // ------------------------
+    if (hamburger && sideMenu) {
+        hamburger.addEventListener("click", () => {
+            sideMenu.classList.toggle("active"); // Toggle sidebar visibility
+            hamburger.classList.toggle("hamburger-active");
+        });
+    }
 
-closeMenu.addEventListener('click', () => {
-    sideMenu.style.left = '-250px'; // Slide the sidebar out
-});
+    // Close Sidebar Menu on Close Button
+    if (closeMenuBtn) {
+        closeMenuBtn.addEventListener("click", () => {
+            sideMenu.classList.remove("active");
+            hamburger.classList.remove("hamburger-active");
+        });
+    }
 
-body.addEventListener('click', (event) => {
-    if (!sideMenu.contains(event.target) && !hamburger.contains(event.target)) {
-        sideMenu.style.left = '-250px'; // Close the sidebar if clicked outside
+    // Close Sidebar Menu on Link Click
+    if (navLinks.length > 0) {
+        navLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                sideMenu.classList.remove("active");
+                hamburger.classList.remove("hamburger-active");
+            });
+        });
+    }
+
+    // Close Sidebar Menu on Outside Click
+    mainContent.addEventListener("click", (e) => {
+        if (
+            sideMenu &&
+            hamburger &&
+            !sideMenu.contains(e.target) &&
+            !hamburger.contains(e.target)
+        ) {
+            sideMenu.classList.remove("active");
+            hamburger.classList.remove("hamburger-active");
+        }
+    });
+
+    // ------------------------
+    // Navbar Scroll Effect
+    // ------------------------
+    if (nav) {
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 50) {
+                nav.classList.add("scrolled");
+            } else {
+                nav.classList.remove("scrolled");
+            }
+        });
+    }
+
+    // ------------------------
+// Toggle Search Bar
+// ------------------------
+if (searchIcon && searchContainer && searchBar) {
+    // Toggle search bar visibility on icon click
+    searchIcon.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        searchContainer.classList.toggle("active");
+
+        if (searchContainer.classList.contains("active")) {
+            searchBar.focus(); // Automatically focus on the search bar
+        }
+    });
+
+    // Close search bar on outside click
+    document.addEventListener("click", (e) => {
+        if (!searchContainer.contains(e.target) && e.target !== searchIcon) {
+            searchContainer.classList.remove("active");
+        }
+    });
+
+    // Optional: Close search bar with the "Escape" key
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && searchContainer.classList.contains("active")) {
+            searchContainer.classList.remove("active");
+        }
+    });
+}
+
+    
+
+    // ------------------------
+    // Toggle Theme
+    // ------------------------
+    if (themeButton) {
+        themeButton.addEventListener("click", () => {
+            document.body.classList.toggle("dark-theme");
+        });
     }
 });
-
-
-
-
-
