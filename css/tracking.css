@@ -1,0 +1,719 @@
+/******************/
+/* General Styles */
+/******************/
+
+/* Global Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    color: var(--font-color);
+    background-color: var(--background-dark);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the scrollbar container */
+::-webkit-scrollbar {
+    width: 10px; /* Adjust the width of the scrollbar */
+    height: 10px; /* For horizontal scrollbar */
+  }
+  
+  /* Style the thumb (the draggable part of the scrollbar) */
+  ::-webkit-scrollbar-thumb {
+    background-color: #333; /* Dark gray (close to black) */
+    border-radius: 6px; /* Rounded corners */
+  }
+  
+  /* Style the thumb on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #000; /* Slightly lighter gray on hover */
+  }
+  
+  /* Style the track (the background of the scrollbar) */
+  ::-webkit-scrollbar-track {
+    background-color: #000; /* Black background */
+    border-radius: 3px; /* Rounded corners */
+  }
+  
+  /* Optional: Add style for horizontal scrollbar */
+  ::-webkit-scrollbar-horizontal {
+    height: 10px; /* Height of horizontal scrollbar */
+  }
+
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: var(--background-dark);
+    color: var(--font-color);
+}
+
+/* Light Mode */
+body.light-mode {
+    background-color: var(--background-light-color);
+    color: var(--font-color-dark);
+}
+
+/******************/
+/* Theme Variables for Dark and Light Modes */
+/******************/
+
+:root {
+    --primary-color: #1e7b50; /* for dark mode */
+    --primary-color-light: #0c8195; /* for light mode */
+    --hover-color: #f1c111; /* for light theme */
+    --hover-color-dark: #48ba4f; /* for dark theme */
+    --accent-color: #f1f1f1; /* Light grey text */
+    --background-dark: #1e1e1e;
+    --background-light-color: #FFFFFF;
+    --font-color: #E0E0E0; /* Light grey for text on dark theme */
+    --font-color-dark: #333; /* for light theme */
+    --chart-background-light: #ffffff; /* Light mode background color */
+    --chart-background-dark: #333333;  /* Dark mode background color */
+    --chart-line-light: #0c8195; /* Light mode chart line color */
+    --chart-line-dark: #1e7b50;  /* Dark mode chart line color */
+}
+
+
+/******************/
+/* Navbar Styling */
+/******************/
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1e1e1e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 70px;
+}
+
+/* Logo Styling */
+.logo {
+    font-size: 1.8rem;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    margin-left: 10px; /* Adjust to move logo more left */
+}
+
+.logo:hover {
+    color: var(--hover-color);
+}
+
+/* Navigation Links */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: var(--hover-color);
+    color: #fff;
+}
+
+/* Contact Button */
+.contact-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid var(--hover-color);
+    border-radius: 50px;
+    color: var(--hover-color);
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+.contact-btn:hover {
+    background-color: var(--hover-color);
+    color: var(--primary-color);
+}
+
+/******************/
+/* Responsive Styles for Navbar */
+/******************/
+#navLinks {
+    display: flex;
+    gap: 10px;
+}
+
+#navLinks li {
+    margin: 0 10px;
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+    font-size: 2rem;
+}
+
+#navLinks.active {
+    display: block;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: var(--background-dark);
+    height: 100vh;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+#navLinks.active li {
+    margin: 20px 0;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 999;
+}
+
+/* Theme Button Styling */
+.btn-theme {
+    background-color: rgb(24, 23, 23);
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 1, 1);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-theme:hover {
+    background-color: var(--background-dark);
+}
+
+/******************/
+/* Sidebar Menu (Hamburger) */
+/******************/
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Start hidden */
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    transition: left 0.3s ease;
+    padding-top: 20px;
+    z-index: 1000;
+}
+
+.side-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.side-menu ul li a {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+.side-menu .close-btn {
+    background: none;
+    color: white;
+    font-size: 20px;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    text-align: right;
+}
+
+/* Styles for when the sidebar is active (visible) */
+.side-menu.active {
+    left: 0; /* Slide in the sidebar */
+}
+
+.hamburger {
+    cursor: pointer;
+}
+
+.hamburger span {
+    font-size: 30px;
+    color: #333;
+    margin-right: 20px;
+}
+
+
+/******************/
+/* Search Bar Styles */
+/******************/
+.search-container {
+    position: relative;
+    width: 200px; /* Adjust width as needed */
+    margin-left: 20px; /* Adjust position to left */
+}
+
+#search-bar {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 30px; /* Curved border */
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search-bar::placeholder {
+    color: #888;
+}
+
+#search-bar:focus {
+    border-color: #3b8bfd;
+    box-shadow: 0 0 5px rgba(59, 143, 253, 0.3);
+}
+
+/******************/
+/* Page Header */
+/******************/
+
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    color: var(--font-color); /* Dynamically change text color */
+    transition: color 0.3s ease;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    color: var(--font-color); /* Dynamically change text color */
+    transition: color 0.3s ease;
+}
+
+.page-header .line {
+    margin: 20px auto 0;
+    width: 1500px;
+    height: 3px;
+    background-color: var(--hover-color); /* Dynamically change line color */
+    transition: background-color 0.3s ease;
+}
+
+/******************/
+/* Filters Section Styling */
+/******************/
+
+.d-flex {
+    display: flex;
+    justify-content: flex-end; /* Keep the filters aligned to the right */
+    align-items: center;
+    gap: 20px; /* Space between the filters */
+    margin-right: 30px; /* Add margin to move them a bit from the edge */
+}
+
+/* Individual filter containers */
+.sort-filter, .date-filter {
+    margin-bottom: 0;
+}
+
+/* Heading styling */
+.sort-filter h4, .date-filter h4 {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: var(--font-color);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Styling for select dropdown and date input */
+#sortFilter, #dateFilter {
+    padding: 6px 12px;
+    border: 2px solid var(--primary-color);
+    border-radius: 25px;
+    font-size: 0.9em;
+    width: 150px;
+    height: 35px;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: var(--font-color);
+}
+
+/* Date input (calendar icon) color change */
+#dateFilter::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* Adjusts color based on theme */
+}
+
+#sortFilter:focus, #dateFilter:focus {
+    outline: none;
+    border-color: var(--primary-color-light);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Theme-based styles */
+body.dark-mode #sortFilter, body.dark-mode #dateFilter {
+    border-color: var(--primary-color);
+    background-color: transparent;
+    color: #fff;
+}
+
+body.dark-mode .sort-filter h4, body.dark-mode .date-filter h4 {
+    color: var(--font-color-light);
+}
+
+body.light-mode #sortFilter, body.light-mode #dateFilter {
+    border-color: var(--primary-color-light);
+    background-color: transparent;
+    color: #333;
+}
+
+body.light-mode .sort-filter h4, body.light-mode .date-filter h4 {
+    color: var(--font-color-dark);
+}
+
+/******************/
+/* Chart Section */
+/******************/
+
+/* Chart Container */
+.chart-container {
+    margin: 0 auto;
+    width: 60%; /* Adjust width to make it larger */
+
+    /* margin-left: 40px; */
+    margin-top: auto;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Decreased top margin */
+}
+
+#productChart {
+    width: 100%;
+    height: 200px; /* Increased height */
+    border-radius: 10px;
+    background-color: var(--chart-background-light); /* Default light background */
+    margin-left: -20px; /* Slight shift to the left */
+}
+
+
+
+/******************/
+/* Table Section */
+/******************/
+
+.table-container {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 90%;
+    border-collapse: collapse;
+    align-items: center;
+    justify-content: center;
+    margin-left: 70px;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: var(--font-color);
+}
+
+table th {
+    background-color: var(--background-dark);
+    font-weight: bold;
+}
+
+table tr:hover {
+    background-color: var(--primary-color);
+}
+
+/******************/
+/* Pagination */
+/******************/
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-list {
+    list-style-type: none;
+    display: flex;
+    padding: 0;
+    margin: 0 15px;
+}
+
+.pagination-list li {
+    margin: 0 5px;
+}
+
+.pagination-list li a {
+    font-size: 16px;
+    color: var(--primary-color-light); /* Light theme color */
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 50%;
+    border: 1px solid var(--primary-color-light);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-list li a:hover {
+    background-color: var(--primary-color-light);
+    color: #fff;
+}
+
+.pagination-btn {
+    font-size: 16px;
+    color: var(--primary-color-light);
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover {
+    background-color: var(--primary-color-light);
+    color: #fff;
+}
+
+.pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+
+/******************/
+/* Media Queries for Navbar Responsive Design */
+/******************/
+@media screen and (max-width: 1024px) {
+    /* For tablets and smaller screens */
+    .nav-container {
+        padding: 0 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* Adjust Search Bar for Mobile */
+    #search-bar {
+        width: 150px; /* Make search bar slightly smaller */
+        padding: 5px 10px; /* Adjust padding for smaller screens */
+        font-size: 0.9rem; /* Adjust font size */
+        margin: 0; /* Remove margin */
+    }
+
+    .logo {
+        font-size: 1.6rem;
+        margin-left: 20px; /* Adjust left margin for the logo */
+    }
+
+    /* Hide navigation links by default */
+    #navLinks {
+        display: none;
+    }
+
+    /* Show hamburger icon */
+    .hamburger {
+        display: block;
+    }
+
+    /* Hamburger menu items */
+    #navLinks.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: var(--background-dark);
+        height: 100vh;
+        padding-top: 20px;
+    }
+
+    /* Theme toggle button adjustments */
+    .theme-toggle {
+        position: absolute;
+        top: 15px;
+        right: 10px;
+        z-index: 999;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    /* For smaller screens like mobile devices */
+    .nav-container {
+        padding: 0 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* Adjust Search Bar for Mobile */
+    #search-bar {
+        width: 150px; /* Make search bar slightly smaller */
+        padding: 5px 10px; /* Adjust padding for smaller screens */
+        font-size: 0.85rem; /* Adjust font size */
+        margin: 0; /* Remove margin */
+    }
+
+    /* Logo font size */
+    .logo {
+        font-size: 1.4rem;
+        margin-left: 10px; /* Slightly adjust left margin */
+    }
+
+    /* Hide navigation links */
+    #navLinks {
+        display: none;
+    }
+
+    /* Show hamburger icon */
+    .hamburger {
+        display: block;
+    }
+
+    /* Open the menu when hamburger is clicked */
+    #navLinks.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: var(--background-dark);
+        height: 100vh;
+        padding-top: 20px;
+    }
+
+    /* Mobile-friendly adjustments for navigation links */
+    #navLinks.active li {
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    /* Theme toggle button adjustments */
+    .theme-toggle {
+        position: absolute;
+        top: 20px;
+        right: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Move search bar inside hamburger menu */
+    .search-container {
+        width: 90%;
+        margin: 20px auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* For very small screens (like smaller phones) */
+    .nav-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Search Bar further adjusted for tiny screens */
+    #search-bar {
+        width: 120px; /* Small search bar */
+        padding: 4px 8px; /* Smaller padding */
+        font-size: 0.75rem;
+        margin: 0; /* Remove margin */
+    }
+
+    /* Logo font size */
+    .logo {
+        font-size: 1.2rem;
+        margin-left: 5px; /* Adjust left margin for smaller screens */
+    }
+
+    /* Hide navigation links */
+    #navLinks {
+        display: none;
+    }
+
+    /* Show hamburger icon */
+    .hamburger {
+        display: block;
+    }
+
+    /* Open the menu when hamburger is clicked */
+    #navLinks.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: var(--background-dark);
+        height: 100vh;
+        padding-top: 20px;
+    }
+
+    /* Mobile-friendly adjustments for navigation links */
+    #navLinks.active li {
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    /* Theme toggle button adjustments */
+    .theme-toggle {
+        position: absolute;
+        top: 20px;
+        right: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Move the search bar inside the hamburger menu */
+    .search-container {
+        width: 90%;
+        margin: 20px auto;
+    }
+}
